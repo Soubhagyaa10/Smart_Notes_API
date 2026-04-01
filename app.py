@@ -1,6 +1,7 @@
 notes = []
 
 from flask import Flask, request, jsonify
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -11,6 +12,7 @@ def home():
 @app.route('/notes', methods=['POST'])
 def add_note():
     data = request.get_json()
+    created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     if not data or 'title' not in data or 'content' not in data:
         return jsonify({"error": "Please provide title and content"}), 400
@@ -24,7 +26,8 @@ def add_note():
         "id": len(notes) + 1,
         "title": title,
         "content": content,
-        "word_count": len(words)
+        "word_count": len(words),
+        "created_at": created_at
     }
    
     notes.append(note)
