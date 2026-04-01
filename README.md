@@ -6,8 +6,11 @@ This is a backend project I built while learning how APIs work beyond basic tuto
 The main goal was to understand how a system handles a request, processes data, and returns a response instead of just building a simple CRUD app.
 
 ## What this project does
-
-It allows users to create notes with a title and content. Each note automatically stores the word count. You can retrieve all notes, delete a specific note, and also view overall statistics like total notes, total words, and average words per note.
+Create, view, and delete notes  
+Automatic summary generation for notes  
+Search notes by keyword  
+View note statistics  
+Handles API failures using fallback logic
 
 ## What I focused on while building this
 
