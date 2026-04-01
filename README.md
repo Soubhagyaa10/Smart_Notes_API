@@ -14,9 +14,9 @@ It allows users to create notes with a title and content. Each note automaticall
 I focused on understanding how API methods work such as GET, POST, and DELETE. I worked on writing backend logic instead of just storing data. I also handled cases where input might be missing or incorrect and made sure responses are structured clearly.
 
 ## Tech stack
-
-Python
-Flask
+Python  
+Flask  
+OpenAI API  
 
 ## API endpoints
 
@@ -33,12 +33,10 @@ GET /notes/stats
 Returns statistics about all notes
 
 ## How to run
-
-Install Flask using pip install flask
-
-Run the application using python app.py
-
-Then open http://127.0.0.1:5000
+Clone the repository  
+Install dependencies using pip install -r requirements.txt  
+Create a .env file and add your API key  
+Run python app.py  
 
 ## Future improvements
 
