@@ -1,4 +1,5 @@
 # Smart Notes API
+AI-powered Smart Notes API with search, statistics, and fallback handling
 
 This is a backend project I built while learning how APIs work beyond basic tutorials.
 
