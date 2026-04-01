@@ -1,10 +1,46 @@
 notes = []
 
+from pydoc import text
+
 from flask import Flask, request, jsonify
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+api_key = os.getenv("OPENAI_API_KEY")
 
 app = Flask(__name__)
 
+from openai import OpenAI
+client = OpenAI(api_key=api_key)
+@app.route('/notes/summary', methods=['POST'])
+def summarize():
+    data = request.get_json()
+
+    if not data or 'text' not in data:
+        return jsonify({"error": "Please provide text"}), 400
+
+    text = data['text']
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "Summarize the following text."},
+                {"role": "user", "content": text}
+            ]
+        )
+        summary = response.choices[0].message.content
+
+    except Exception as e:
+     summary = text[:50] + "..."
+
+    return jsonify({
+        "summary": summary
+    })
+
+    
 @app.route('/')
 def home():
     return "API is working"
@@ -20,12 +56,26 @@ def add_note():
     title = data['title']
     content = data['content']
 
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "Summarize the following text."},
+                {"role": "user", "content": content}
+           ]
+        )
+        summary = response.choices[0].message.content
+
+    except Exception as e:
+        summary = content[:50] + "..."
+
     words = content.split()
 
     note = {
         "id": len(notes) + 1,
         "title": title,
         "content": content,
+        "summary": summary,
         "word_count": len(words),
         "created_at": created_at
     }
@@ -69,6 +119,24 @@ def get_stats():
         "total_words": total_words,
         "average_words": average_words
     })
+
+   @app.route('/notes/search', methods=['GET'])
+def search_notes():
+    query = request.args.get('q')
+
+    results = []
+
+    for note in notes:
+        query = query.lower()
+
+        if query in note['title'].lower() or query in note['content'].lower():
+        
+            results.append(note)
+
+    return jsonify({
+        "results": results
+    })
+
 
 if __name__ == '__main__':
     app.run(debug=True)
