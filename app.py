@@ -1,5 +1,3 @@
-dcxd
-
 notes = []
 
 from pydoc import text
